@@ -2,7 +2,7 @@
   <div>
     <ul class="ingr-list">
       <li class="ingredient" v-for="(ingredient, index) in ingredients" :key="index">
-        <p>{{ingredient.quantity}}{{ingredient.unit}} {{ingredient.name}}</p>
+        <p>{{ingredient.quantity}} {{ingredient.unit}} {{ingredient.name}}</p>
         <div class="ingr-buttons">
           <button class="uk-button uk-button-small ingr-button" @click="editIngr(index)">Edit</button>
           <button class="uk-button uk-button-small ingr-button" @click="deleteIngr(index)">Delete</button>
