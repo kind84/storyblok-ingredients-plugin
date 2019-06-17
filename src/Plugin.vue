@@ -1,10 +1,12 @@
 <template>
   <div>
-    <ul>
-      <li v-for="(ingredient, index) in ingredients" :key="index">
-        {{ingredient.quantity}}{{ingredient.unit}} {{ingredient.name}}
-        <button class="uk-button uk-button-small" @click="editIngr(index)">Edit</button>
-        <button class="uk-button uk-button-small" @click="deleteIngr(index)">Delete</button>
+    <ul class="ingr-list">
+      <li class="ingredient" v-for="(ingredient, index) in ingredients" :key="index">
+        <p>{{ingredient.quantity}}{{ingredient.unit}} {{ingredient.name}}</p>
+        <div class="ingr-buttons">
+          <button class="uk-button uk-button-small ingr-button" @click="editIngr(index)">Edit</button>
+          <button class="uk-button uk-button-small ingr-button" @click="deleteIngr(index)">Delete</button>
+        </div>
       </li>
     </ul>
     <div class="uk-form-row">
@@ -40,8 +42,7 @@ export default {
       return {
         // needs to be equal to your storyblok plugin name
         plugin: 'ingredients',
-        title: '',
-        description: ''
+        ingredients: this.ingredients
       }
     },
     pluginCreated() {
@@ -88,6 +89,31 @@ export default {
 </script>
 
 <style>
+.ingr-list {
+  width: 100%;
+  padding: 0;
+}
+
+.ingredient {
+  width: 100%;
+  margin: 2px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ingredient p {
+  margin: 0;
+}
+
+.ingr-buttons {
+  justify-self: right;
+}
+
+.ingr-button {
+  margin: 2px;
+}
+
 .add-button {
   width: 100%;
 }
