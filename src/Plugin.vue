@@ -1,26 +1,26 @@
 <template>
-  <div>
+  <div class="plugin-container">
     <ul class="ingr-list">
-      <li class="ingredient" v-for="(ingredient, index) in ingredients" :key="index">
+      <li class="ingredient" v-for="(ingredient, index) in model.ingredients" :key="index">
         <p>{{ingredient.quantity}} {{ingredient.unit}} {{ingredient.name}}</p>
         <div class="ingr-buttons">
-          <button class="uk-button uk-button-small ingr-button" @click="editIngr(index)">Edit</button>
-          <button class="uk-button uk-button-small ingr-button" @click="deleteIngr(index)">Delete</button>
+          <button class="uk-button uk-button-primary uk-button-small ingr-button" @click="editIngr(index)">Edit</button>
+          <button class="uk-button uk-button-danger uk-button-small ingr-button" @click="deleteIngr(index)">Delete</button>
         </div>
       </li>
     </ul>
     <div class="uk-form-row">
-      <label>Quantità</label>
-      <input type="text" placeholder="Quantità" v-model="quantity" class="uk-width-1-1">
-      <label>Unità</label>
-      <input type="text" placeholder="Unità" v-model="unit" class="uk-width-1-1">
-      <label>Nome</label>
-      <input type="text" placeholder="Nome ingrediente" v-model="name" class="uk-width-1-1">
+      <label>Quantity</label>
+      <input type="text" placeholder="Quantity" v-model="quantity" class="uk-width-1-1">
+      <label>Unit</label>
+      <input type="text" placeholder="Unit" v-model="unit" class="uk-width-1-1">
+      <label>Name</label>
+      <input type="text" placeholder="Name" v-model="name" class="uk-width-1-1">
     </div>
     <br>
     <button 
-      class="uk-button uk-button-default add-button"
-      @click="addIngredient">+</button>
+      class="uk-button uk-button-primary add-button"
+      @click="addIngredient"><strong>+</strong></button>
   </div>
 </template>
 
@@ -29,7 +29,6 @@ export default {
   mixins: [window.Storyblok.plugin],
   data() {
     return {
-      ingredients: [],
       name: '',
       quantity: '',
       unit: '',
@@ -42,7 +41,7 @@ export default {
       return {
         // needs to be equal to your storyblok plugin name
         plugin: 'ingredients',
-        ingredients: this.ingredients
+        ingredients: []
       }
     },
     pluginCreated() {
@@ -50,12 +49,15 @@ export default {
       console.log('View source and customize: https://github.com/storyblok/storyblok-fieldtype')
     },
     addIngredient() {
+      if (this.name == '' && this.quantity == '' && this.unit == '') {
+        return
+      }
       if (this.editMode) {
-        this.ingredients[this.editIndex].name = this.name
-        this.ingredients[this.editIndex].quantity = this.quantity
-        this.ingredients[this.editIndex].unit = this.unit
+        this.model.ingredients[this.editIndex].name = this.name
+        this.model.ingredients[this.editIndex].quantity = this.quantity
+        this.model.ingredients[this.editIndex].unit = this.unit
       } else {
-        this.ingredients.push({
+        this.model.ingredients.push({
           name: this.name,
           quantity: this.quantity,
           unit: this.unit
@@ -67,12 +69,12 @@ export default {
       this.editMode = false
     },
     deleteIngr(index) {
-      this.ingredients.splice(index, 1)
+      this.model.ingredients.splice(index, 1)
     },
     editIngr(index) {
-      this.name = this.ingredients[index].name
-      this.quantity = this.ingredients[index].quantity
-      this.unit = this.ingredients[index].unit
+      this.name = this.model.ingredients[index].name
+      this.quantity = this.model.ingredients[index].quantity
+      this.unit = this.model.ingredients[index].unit
       this.editMode = true
       this.editIndex = index
     }
@@ -89,29 +91,40 @@ export default {
 </script>
 
 <style>
+.plugin-container {
+  box-sizing: border-box;
+}
+
 .ingr-list {
-  width: 100%;
+  /* width: 100%; */
   padding: 0;
+  margin-top: 1px;
 }
 
 .ingredient {
-  width: 100%;
-  margin: 2px 0;
+  /* width: 99%; */
+  margin: -1px 0;
+  padding: 2px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  background-color: white;
 }
 
 .ingredient p {
   margin: 0;
+  padding-left: 2px;
 }
 
 .ingr-buttons {
   justify-self: right;
+  display: flex;
 }
 
 .ingr-button {
-  margin: 2px;
+  margin: 2px !important;
 }
 
 .add-button {
